@@ -27,7 +27,7 @@
         <div class="header-left">
           <div class="header-left-logo">
             <img src="/avatar_io.jpg" alt ="Utente" />
-            <span>Nome</span>
+            <span>Kassadin</span>
           </div>
           <div class="header-left-icons">
             <i class="fas fa-circle-notch"></i>
@@ -57,14 +57,16 @@
         </div>
         <div class="contacts">
           <div class="contact"
-           v-for="chats in contacts">
+           v-for="(chats, index) in contacts"
+           @click="changeContact(index)">
             <div class="contact-logo">
               <img :src="chats.avatar" alt="" />
             </div>
             <div class="contact-info">
               <h3>
                 <span class="contact-name">{{ chats.name }}</span>
-                <span class="time f-right"></span>
+                <p class="last-seen">{{ contacts[index].messages[contacts[index].messages.length - 1].message }}</p>
+                <span class="time f-right"> {{ contacts[index].messages[contacts[index].messages.length - 1].date }} </span>
               </h3>
               <small></small>
             </div>
@@ -76,10 +78,10 @@
       <div class="right">
         <div class="header-right">
           <div class="header-right-logo">
-            <img src="/avatar_1.jpg" alt="" />
+            <img :src="contacts[selectionContact].avatar" alt="" />
             <h3>
-              <span id="header-right-contact-name">Michele</span> <br />
-              <small class="time">Ultimo accesso oggi alle </small>
+              <span id="header-right-contact-name">{{ contacts[selectionContact].name }}</span> <br />
+              <small class="time">Ultimo accesso oggi alle {{ contacts[selectionContact].messages[contacts[selectionContact].messages.length - 1].date }} </small>
             </h3>
           </div>
           <div class="header-right-icons">
@@ -90,8 +92,11 @@
         </div>
         <div class="right-messages-container">
           <div class="right-messages">
-            <div class="message sent">test</div>
-            <div class="message received">test</div>
+            <div class="message" 
+            v-for="text in contacts[selectionContact].messages"
+            :class="text.status">
+            {{ text.message }}
+            </div>
           </div>
         </div>
         <div class="right-footer">
