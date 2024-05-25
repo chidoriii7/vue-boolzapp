@@ -1,6 +1,7 @@
-// Milestone 2
-// Visualizzazione dinamica dei messaggi: tramite la direttiva v-for, visualizzare tutti i messaggi relativi al contatto attivo all’interno del pannello della conversazione
-// Click sul contatto mostra la conversazione del contatto cliccato
+// Milestone 3
+// Aggiunta di un messaggio: l’utente scrive un testo nella parte bassa e digitando “enter” il testo viene aggiunto al thread sopra, come messaggio verde
+// Risposta dall’interlocutore: ad ogni inserimento di un messaggio, l’utente riceverà un “ok” come risposta, che apparirà dopo 1 secondo
+
 
 
 
@@ -183,7 +184,8 @@ createApp({
                 }
             ],
             
-            selectionContact: 0
+            selectionContact: 0 ,
+            mandaMessaggio: ''
         }
     },
     
@@ -192,6 +194,49 @@ createApp({
             // console.log('ho cliccato un contatto');
             // console.log(index);
             this.selectionContact = index;
+        },
+        
+        submit(myMessage) {
+            this.mandaMessaggio = myMessage;
+            // console.log('ho mandato un messaggio',this.mandaMessaggio);
+            let DateTime = luxon.DateTime;
+            
+            let newObject = 
+            {
+                date: DateTime.now(),
+                message: this.mandaMessaggio,
+                status:'sent'
+            }
+            this.contacts[this.selectionContact].messages.push(newObject);
+
+            this.mandaMessaggio = ''
+
+            // setTimeout( function(){
+                
+            //     let newObject = 
+            // {
+            //     date: DateTime.now(),
+            //     message: 'Ok',
+            //     status:'received'
+            // }
+            
+            // this.contacts[this.selectionContact].messages.push(newObject)
+            // }, 1000)
+
+            setTimeout(() => {
+                
+                let newObject = 
+            {
+                date: DateTime.now(),
+                message: 'Ok',
+                status:'received'
+            }
+            
+            this.contacts[this.selectionContact].messages.push(newObject)
+            }, 1000)
         }
+
+        
     }
+
 }).mount('#app')
